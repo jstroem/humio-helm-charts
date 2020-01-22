@@ -19,14 +19,15 @@ spec:
       release: {{ .Release.Name }}
   template:
     metadata:
+      {{- if .Values.prometheus.enabled }}
+      annotations:
+        prometheus.io/port: {{ .Values.prometheus.port | quote }}
+        prometheus.io/scrape: "true"
+      {{- end }}
       labels:
         app: {{ include "humio-core.name" . }}
         release: {{ .Release.Name }}
         humio-parser: {{ default "kv" .Values.humioParser }}
-        {{- if .Values.prometheus.enabled }}
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "{{ .Values.prometheus.port }}"
-        {{- end }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -313,7 +314,7 @@ spec:
         requests:
           storage: {{ .Values.localVolume.storage.size }}
 {{- end }}
-{{- if and .Values.cache.localVolume.enabled (eq .Values.primaryStorage.type "remote") }}
+{{- if d .Values.cache.localVolume.enabled (eq .Values.primaryStorage.type "remote") }}
   - metadata:
       name: local-vol
     spec:
