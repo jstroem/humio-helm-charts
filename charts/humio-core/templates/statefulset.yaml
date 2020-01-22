@@ -23,10 +23,10 @@ spec:
         app: {{ include "humio-core.name" . }}
         release: {{ .Release.Name }}
         humio-parser: {{ default "kv" .Values.humioParser }}
-      {{- if .Values.prometheus.enabled }}
+        {{- if .Values.prometheus.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/port: "{{ .Values.prometheus.port }}"
-      {{ - end }}
+        {{ - end }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
