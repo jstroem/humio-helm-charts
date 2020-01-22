@@ -246,7 +246,7 @@ spec:
             {{- if .Values.prometheus.enabled }}
             - name: PROMETHEUS_METRICS_PORT
               value: {{ .Values.prometheus.port | quote }}
-            {{ - end }}
+            {{- end }}
             {{- if .Values.env }}
               {{- with .Values.env }}
                 {{- toYaml . | nindent 12 }}
